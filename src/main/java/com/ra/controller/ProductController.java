@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/product")
 public class ProductController {
 
@@ -94,10 +95,18 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponse> editProduct(@PathVariable("id") Integer id ,@RequestBody ProductRequest productRequest) {
         Product product = productService.findById(id) ;
+        String newName = productRequest.getProductName() ;
+        Double newPrice = productRequest.getProductPrice();
+        Integer newCategoryId = productRequest.getCategoryId() ;
+        Category category = categoryService.findById(newCategoryId) ;
+        if (category == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND) ;
+        }
         if (product != null) {
-           product.setProductName(productRequest.getProductName());
-           product.setProductPrice(productRequest.getProductPrice());
-           product.setCategory(categoryService.findById(productRequest.getCategoryId()));
+            product.setId(id);
+            product.setProductName(newName);
+            product.setProductPrice(newPrice);
+            product.setCategory(category);
 
            Product updateProduct = productService.save(product) ;
 

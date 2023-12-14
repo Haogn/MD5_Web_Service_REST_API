@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/category")
 public class CategoryController {
     @Autowired
@@ -33,19 +34,27 @@ public class CategoryController {
 
 
     @PostMapping()
-    public ResponseEntity<Category> createCategory(@RequestBody Category category){
-        Category newCategory = categoryService.save(category) ;
-        if ( newCategory == null) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> createCategory(@RequestBody Category category){
+        Category newCategory  ;
+        try {
+            newCategory = categoryService.save(category) ;
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(newCategory, HttpStatus.OK) ;
+
+        return new ResponseEntity<>(newCategory, HttpStatus.CREATED) ;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Category> editCategory(@PathVariable("id") Integer id , @RequestBody Category category) {
         Category editCategory = categoryService.findById(id) ;
         if (editCategory != null) {
-            Category updateCategory =  categoryService.save(category) ;
+            Category updateCategory =  new Category()  ;
+            updateCategory.setId(id);
+            updateCategory.setCategoryName(category.getCategoryName());
+            updateCategory.setCategoryStatus(category.getCategoryStatus());
+            updateCategory.setProducts(editCategory.getProducts());
+            categoryService.save(updateCategory) ;
             return new ResponseEntity<>(updateCategory, HttpStatus.OK) ;
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND) ;
