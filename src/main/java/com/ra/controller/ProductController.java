@@ -6,7 +6,12 @@ import com.ra.entity.Category;
 import com.ra.entity.Product;
 import com.ra.service.CategoryService;
 import com.ra.service.ProductService;
+import com.ra.util.exception.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +42,17 @@ public class ProductController {
         }
         return new  ResponseEntity<>(responseList, HttpStatus.OK) ;
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<ProductResponse>> getAllProductByProductName(@RequestParam String name,
+                                                                            @PageableDefault(size = 2, page = 0, sort = "productName",direction = Sort.Direction.DESC) Pageable pageable) throws UserException {
+        if (!name.isEmpty()) {
+            return new ResponseEntity<>(productService.findAllByProductNameContainingIgnoreCase(name,pageable), HttpStatus.OK) ;
+        }
+        throw new UserException("Khong tim thay san pham trung khop") ;
+    }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getById(@PathVariable("id") Integer id) {

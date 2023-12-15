@@ -8,7 +8,8 @@ import com.ra.util.exception.UserException;
 import java.util.List;
 
 public interface OrderService {
-    List<OrderResponse> findAll() ;
+//    List<OrderResponse> findAll() ;
+    List<Orders> findAll();
     Orders findById(Integer id) ;
 
     Orders saveByUserId(Integer idUser , OrderRequest orderRequest) throws UserException;

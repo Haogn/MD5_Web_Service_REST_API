@@ -23,8 +23,8 @@ public class OrderDetail {
     private Orders orders;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JsonIgnore
     private Product product ;
 
     @Column(name = "quantity")

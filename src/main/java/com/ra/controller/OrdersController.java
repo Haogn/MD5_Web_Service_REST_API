@@ -19,11 +19,16 @@ public class OrdersController {
     @Autowired
     private OrderService orderService ;
 
-    @GetMapping("")
-    public ResponseEntity<List<OrderResponse>> getAll(){
-        List<OrderResponse> list = orderService.findAll();
-        return new ResponseEntity<>(list, HttpStatus.OK) ;
-    }
+//    @GetMapping("")
+//    public ResponseEntity<List<OrderResponse>> getAll(){
+//        List<OrderResponse> list = orderService.findAll();
+//        return new ResponseEntity<>(list, HttpStatus.OK) ;
+//    }
+@GetMapping("")
+public ResponseEntity<List<Orders>> getAll(){
+    List<Orders> list = orderService.findAll();
+    return new ResponseEntity<>(list, HttpStatus.OK) ;
+}
 
     @PostMapping("/{idUser}")
     public ResponseEntity<Orders> createOrderByUserId(@PathVariable("idUser") Integer idUser,

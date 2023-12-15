@@ -3,7 +3,10 @@ package com.ra.service;
 import com.ra.dto.response.ProductResponse;
 import com.ra.entity.Product;
 import com.ra.repository.ProductRepository;
+import com.ra.util.exception.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +21,17 @@ public class ProductServiceIMPL implements ProductService{
     public List<Product> findAll() {
         List<Product> list = (List<Product>) productRepository.findAll() ;
         return list;
+    }
+
+    @Override
+    public Page<ProductResponse> findAllByProductNameContainingIgnoreCase(String name, Pageable pageable) throws UserException {
+        return productRepository.findAllByProductNameContainingIgnoreCase(name,pageable).map(item ->
+                ProductResponse.builder()
+                        .id(item.getId())
+                        .productName(item.getProductName())
+                        .productPrice(item.getProductPrice())
+                        .categoryName(item.getCategory().getCategoryName())
+                        .build());
     }
 
     @Override

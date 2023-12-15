@@ -18,18 +18,23 @@ public class OrderServiceIMPL implements OrderService{
     private OrderRepository orderRepository ;
     @Autowired
     private UserService userService ;
+//    @Override
+//    public List<OrderResponse> findAll() {
+//        List<OrderResponse> list = orderRepository.findAll().stream().map(item-> OrderResponse.builder()
+//                .id(item.getId())
+//                .addressShip(item.getAddressShip())
+//                .dateOrder(item.getDateOrder())
+//                .note(item.getNote())
+//                .phone(item.getPhone())
+//                .status(item.isStatus())
+//                .username(item.getUser().getFullName())
+//                .build()).toList() ;
+//        return list;
+//    }
+
     @Override
-    public List<OrderResponse> findAll() {
-        List<OrderResponse> list = orderRepository.findAll().stream().map(item-> OrderResponse.builder()
-                .id(item.getId())
-                .addressShip(item.getAddressShip())
-                .dateOrder(item.getDateOrder())
-                .note(item.getNote())
-                .phone(item.getPhone())
-                .status(item.isStatus())
-                .username(item.getUser().getFullName())
-                .build()).toList() ;
-        return list;
+    public List<Orders> findAll() {
+        return orderRepository.findAll();
     }
 
     @Override
