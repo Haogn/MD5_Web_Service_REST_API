@@ -11,6 +11,7 @@ import java.util.List;
 public interface ProductService {
     List<Product> findAll() ;
     Page<ProductResponse> findAllByProductNameContainingIgnoreCase(String name , Pageable pageable) throws UserException;
+    Page<ProductResponse> findAllByProductPrice(Double a , Double b, Pageable pageable ) ;
     Product findById(Integer id) ;
     Product save(Product product) ;
     void delete(Integer id) ;

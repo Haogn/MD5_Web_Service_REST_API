@@ -35,6 +35,17 @@ public class ProductServiceIMPL implements ProductService{
     }
 
     @Override
+    public Page<ProductResponse> findAllByProductPrice(Double a, Double b, Pageable pageable) {
+        return productRepository.findAllByProductPrice(a,b, pageable).map(item ->
+                ProductResponse.builder()
+                        .id(item.getId())
+                        .productName(item.getProductName())
+                        .productPrice(item.getProductPrice())
+                        .categoryName(item.getCategory().getCategoryName())
+                        .build());
+    }
+
+    @Override
     public Product findById(Integer id) {
         Optional<Product> product = productRepository.findById(id) ;
         return product.orElse(null);

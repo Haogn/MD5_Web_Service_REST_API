@@ -45,11 +45,18 @@ public class ProductController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<ProductResponse>> getAllProductByProductName(@RequestParam String name,
-                                                                            @PageableDefault(size = 2, page = 0, sort = "productName",direction = Sort.Direction.DESC) Pageable pageable) throws UserException {
+                                                                            @PageableDefault(size = 2, page = 0, sort = "productName",direction = Sort.Direction.ASC) Pageable pageable) throws UserException {
         if (!name.isEmpty()) {
             return new ResponseEntity<>(productService.findAllByProductNameContainingIgnoreCase(name,pageable), HttpStatus.OK) ;
         }
         throw new UserException("Khong tim thay san pham trung khop") ;
+    }
+
+    @GetMapping("/searchByPrice")
+    public ResponseEntity<Page<ProductResponse>> getAllProductByPrice(@RequestParam Double a ,
+                                                                      @RequestParam Double b ,
+                                                                      @PageableDefault(size = 2, page = 0, sort = "productPrice", direction = Sort.Direction.ASC) Pageable pageable) {
+        return new ResponseEntity<>(productService.findAllByProductPrice(a, b, pageable), HttpStatus.OK) ;
     }
 
 
